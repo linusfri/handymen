@@ -12,7 +12,10 @@ export type ExistingImage = {
 
 export type ImageResponseData = {
   id: number;
-  url: string;
+  data?: string;
+  filename: string;
+  uri: string;
+  file_type: string;
 };
 
 /** Could be either a new image or an existing one when creating or updating product from client. */

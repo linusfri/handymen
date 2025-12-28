@@ -24,7 +24,7 @@ export function ProductListing({ items, className, imageClassName }: ProductList
           >
             <View style={{ width: screenWidth / 2 - 24 }} className={cn('mb-4')}>
               <Image
-                source={{ uri: item.images.length > 0 ? getFileUrl(item.images[0].url) : undefined }}
+                source={{ uri: item.images.length > 0 ? getFileUrl(item.images[0].uri) : undefined }}
                 className={cn('aspect-square w-full rounded-md', imageClassName)}
                 resizeMode="cover"
               />
