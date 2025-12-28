@@ -189,7 +189,7 @@ export default function ProductDetailScreen() {
         ) : (
           <>
             <Image
-              source={{ uri: product.images.length > 0 ? getFileUrl(product.images[0].url) : undefined }}
+              source={{ uri: product.images.length > 0 ? getFileUrl(product.images[0].uri) : undefined }}
               className={cn('aspect-square w-full rounded-md')}
               resizeMode="cover"
             />
