@@ -3,7 +3,7 @@ import { getUser, loginUser, logoutUser } from 'lib/services/user-service';
 import { useBoundStore } from 'lib/store/store';
 
 type LoginParams = {
-  email: string;
+  username: string;
   password: string;
   rememberMe: boolean;
 };
@@ -20,8 +20,8 @@ export function useAuth() {
 
   const loginMutation = useMutation({
     mutationKey: ['login'],
-    mutationFn: async ({ email, password, rememberMe }: LoginParams) =>
-      await loginUser(email, password, 'mobile', rememberMe),
+    mutationFn: async ({ username, password, rememberMe }: LoginParams) =>
+      await loginUser(username, password, 'mobile', rememberMe),
     onSuccess: (data, variables) => {
       signIn(data.token, variables.rememberMe);
     },

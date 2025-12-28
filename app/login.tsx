@@ -14,14 +14,14 @@ import { Button } from 'components/ui/button';
 
 export default function Login() {
   type LoginFormData = {
-    email: string;
+    username: string;
     password: string;
     rememberMe: boolean;
   };
 
   const { ...formMethods } = useForm<LoginFormData>({
     defaultValues: {
-      email: '',
+      username: '',
       password: '',
       rememberMe: true,
     },
@@ -37,7 +37,7 @@ export default function Login() {
 
   function handleLoginError(error: AxiosError) {
     if (error.response?.status) {
-      setError('email', {
+      setError('username', {
         type: 'manual',
         message: t('auth.validation.invalidCredentials'),
       });
@@ -51,7 +51,7 @@ export default function Login() {
   async function onSubmit(data: LoginFormData) {
     return login(
       {
-        email: data.email,
+        username: data.username,
         password: data.password,
         rememberMe: data.rememberMe,
       },
@@ -78,19 +78,19 @@ export default function Login() {
         <FormInput
           editable={!formState.isSubmitting && !formState.isValidating}
           containerClassName="mb-4"
-          name="email"
-          label={t('auth.fields.email')}
-          placeholder={t('auth.fields.email')}
+          name="username"
+          label={t('auth.fields.username')}
+          placeholder={t('auth.fields.username')}
           rules={{
             required: {
               value: true,
-              message: t('auth.validation.emailRequired'),
+              message: t('auth.validation.usernameRequired'),
             },
           }}
           autoCapitalize="none"
-          textContentType="emailAddress"
-          autoComplete="email"
-          keyboardType="email-address"
+          textContentType="username"
+          autoComplete="username"
+          keyboardType="default"
         />
 
         <FormInput
@@ -126,7 +126,7 @@ export default function Login() {
           disabled={formState.isSubmitting}
         >
           <Text className="text-base font-semibold">
-            {t('auth.actions.logIn')}
+            {t('auth.actions.login')}
           </Text>
         </Button>
       </FormProvider>

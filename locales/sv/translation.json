@@ -4,6 +4,15 @@
       "login": "Logga in",
       "logout": "Logga ut",
       "signup": "Registrera"
+    },
+    "validation": {
+      "usernameRequired": "Användarnamn är obligatoriskt",
+      "passwordRequired": "Lösenord är obligatoriskt"
+    },
+    "fields": {
+      "username": "Användarnamn",
+      "password": "Lösenord",
+      "rememberMe": "Kom ihåg mig"
     }
   },
   "navigation": {
@@ -70,6 +79,11 @@
     "notFound": {
       "title": "Inget hittades",
       "description": "Inga objekt att visa"
+    }
+  },
+  "common": {
+    "greetings": {
+      "welcome": "Välkommen!"
     }
   }
 }
