@@ -58,7 +58,8 @@ function ControlledSelect(props: ControlledSelectProps) {
               placeholder={selectProps.placeholder || selectProps.label}
             />
           </SelectTrigger>
-          <SelectContent portalHost={portalHost} align='end'>
+          <View>
+          <SelectContent className={cn('left-4 right-4')} portalHost={portalHost}  align="center">
             <SelectGroup>
               {options.map((option) => (
                 <SelectItem
@@ -71,6 +72,7 @@ function ControlledSelect(props: ControlledSelectProps) {
               ))}
             </SelectGroup>
           </SelectContent>
+          </View>
         </Select>
       </View>
       {fieldState.error && (

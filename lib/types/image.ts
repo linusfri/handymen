@@ -10,7 +10,7 @@ export type ExistingImage = {
   id: number;
 };
 
-export type ImageResponseData = {
+export type ImageData = {
   id: number;
   data?: string;
   filename: string;

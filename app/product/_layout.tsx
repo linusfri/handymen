@@ -9,7 +9,15 @@ export default function ProductLayout() {
   return (
     <Stack>
       <Stack.Screen
-        name='[id]'
+        name='[id]/index'
+        options={{
+          headerShown: true,
+          title: t('productDetail.detailTitle'),
+          ...commonSubPageHeaderTheme,
+        }}
+      />
+      <Stack.Screen
+        name='[id]/edit'
         options={{
           headerShown: true,
           title: t('productDetail.editTitle'),

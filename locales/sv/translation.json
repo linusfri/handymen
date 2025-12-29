@@ -66,6 +66,7 @@
   },
   "productDetail": {
     "editTitle": "Redigera produkt",
+    "detailTitle": "Produktdetaljer",
     "description": "Beskrivning",
     "edit": "Redigera",
     "save": "Spara",
