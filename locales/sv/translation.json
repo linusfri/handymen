@@ -26,7 +26,7 @@
     "title": "Lägg till produkt",
     "add": "Lägg till",
     "description": "Lägg till information om den produkt du vill skapa.",
-    "addImage": "Lägg till bild",
+    "addImages": "Lägg till bilder",
     "fields": {
       "name": "Produktnamn",
       "description": "Beskrivning",

@@ -12,6 +12,7 @@ import { Pressable, View } from 'react-native';
 import MaterialSymbol from 'lib/icons/material-symbols';
 import ImagePickerModal from 'components/modal/image-picker-modal';
 import { useProducts } from 'lib/hooks/product/use-products';
+import { Separator } from 'components/ui/separator';
 
 export type ProductFormData = {
   name: string;
@@ -134,6 +135,25 @@ export default function ProductCreateModal({
             portalHost="modal-portal"
           />
 
+          <FormInput
+            editable={!formState.isSubmitting}
+            containerClassName="mb-6"
+            name="price"
+            label={t('createProduct.fields.price')}
+            placeholder={t('createProduct.fields.price')}
+            keyboardType="decimal-pad"
+            rules={{
+              required: {
+                value: true,
+                message: t('createProduct.validation.priceRequired'),
+              },
+              pattern: {
+                value: /^\d+(\.\d{1,2})?$/,
+                message: t('createProduct.validation.priceInvalid'),
+              },
+            }}
+          />
+
           {/* Image selection section */}
           <View className={cn('mb-4')}>
             <Text className={cn('mb-2 font-medium')}>{t('createProduct.fields.images')}</Text>
@@ -144,7 +164,7 @@ export default function ProductCreateModal({
               variant="secondary"
             >
               <MaterialSymbol name="addPhotoAlternate" className={cn('mr-2 text-xl')} />
-              <Text className={cn('font-semibold')}>{t('createProduct.addImage')}</Text>
+              <Text className={cn('font-semibold')}>{t('createProduct.addImages')}</Text>
             </Button>
 
             {selectedImageIds.length > 0 && (
@@ -170,24 +190,7 @@ export default function ProductCreateModal({
             )}
           </View>
 
-          <FormInput
-            editable={!formState.isSubmitting}
-            containerClassName="mb-6"
-            name="price"
-            label={t('createProduct.fields.price')}
-            placeholder={t('createProduct.fields.price')}
-            keyboardType="decimal-pad"
-            rules={{
-              required: {
-                value: true,
-                message: t('createProduct.validation.priceRequired'),
-              },
-              pattern: {
-                value: /^\d+(\.\d{1,2})?$/,
-                message: t('createProduct.validation.priceInvalid'),
-              },
-            }}
-          />
+          <Separator className="mb-6" />
 
           <Button
             className={cn('mb-4')}
@@ -213,7 +216,7 @@ export default function ProductCreateModal({
       {imagePickerVisible && (
         <ImagePickerModal
           modalVisible={imagePickerVisible}
-          context='product'
+          context="product"
           setModalVisible={setImagePickerVisible}
           selectedImageIds={selectedImageIds}
           setSelectedImageIds={setSelectedImageIds}

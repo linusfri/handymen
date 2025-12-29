@@ -18,22 +18,21 @@ export function ProductListing({ items, className, imageClassName }: ProductList
     <ScrollView className={cn('w-full', className)}>
       <View className="flex-row flex-wrap justify-between">
         {items.map((item) => (
-          <Link
-            key={item.id}
-            href={`/product/${item.id}`}
-          >
-            <View style={{ width: screenWidth / 2 - 24 }} className={cn('mb-4')}>
+          <Link className={cn('mb-6')} key={item.id} href={`/product/${item.id}`}>
+            <View style={{ width: screenWidth / 2 - 24 }}>
               <Image
-                source={{ uri: item.images.length > 0 ? getFileUrl(item.images[0].uri) : undefined }}
-                className={cn('aspect-square w-full rounded-md', imageClassName)}
+                source={{
+                  uri: item.images.length > 0 ? getFileUrl(item.images[0].uri) : undefined,
+                }}
+                className={cn('aspect-square w-full rounded-md mb-2', imageClassName)}
                 resizeMode="cover"
               />
-              <View className="mt-2">
+              <View>
                 <Text className="font-semibold">{item.name}</Text>
-                <Text className="text-sm text-gray-600">{formatItemPrice(item.price)}</Text>
+                <Text className="text-sm text-gray-600 mb-1">{formatItemPrice(item.price)}</Text>
                 <Text
                   className={cn(
-                    'mt-1 text-xs',
+                    'text-xs',
                     item.status === 'available' ? 'text-green-600' : 'text-gray-500'
                   )}
                 >
