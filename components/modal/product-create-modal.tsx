@@ -8,7 +8,6 @@ import { FormInput } from 'components/form/fields/input/controlled-input';
 import { FormSelect } from 'components/form/fields/select/controlled-select';
 import { Button } from 'components/ui/button';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
-import { ImageCreateData } from 'lib/types/image';
 
 export type ProductFormData = {
   name: string;
@@ -21,10 +20,11 @@ export type ProductFormData = {
 export default function ProductCreateModal({
   modalVisible,
   submitFn,
+  setModalVisible,
 }: {
   modalVisible: boolean;
-  productImages: ImageCreateData[];
   submitFn: (data: ProductFormData) => Promise<void>;
+  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const { ...formMethods } = useForm<ProductFormData>({
     defaultValues: {
@@ -127,9 +127,14 @@ export default function ProductCreateModal({
             }}
           />
 
-          <Button onPress={handleSubmit(onSubmit)} disabled={formState.isSubmitting}>
+          <Button className={cn('mb-4')} onPress={handleSubmit(onSubmit)} disabled={formState.isSubmitting}>
             <Text className={cn('font-semibold text-primary-foreground')}>
               {t('createProduct.submit')}
+            </Text>
+          </Button>
+          <Button className={cn('bg-destructive')} onPress={() => setModalVisible(false)} disabled={formState.isSubmitting}>
+            <Text className={cn('font-semibold bg-destructive text-primary-foreground')}>
+              {t('productDetail.cancel')}
             </Text>
           </Button>
         </FormProvider>

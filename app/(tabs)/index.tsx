@@ -38,7 +38,7 @@ export default function Home() {
             kind: 'new',
             data: asset.base64 ?? '',
             filename: asset.fileName ?? 'unknown',
-            mimetype: asset.type ?? 'image/jpeg',
+            mimetype: asset.type ?? 'image',
           }) as NewImage
       );
 
@@ -89,7 +89,7 @@ export default function Home() {
 
       <ProductCreateModal
         modalVisible={modalVisible}
-        productImages={chosenImages}
+        setModalVisible={setModalVisible}
         submitFn={onSubmit}
       />
     </View>

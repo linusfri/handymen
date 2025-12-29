@@ -46,7 +46,9 @@ export default function ProductEditScreen() {
     },
   });
 
-  const { handleSubmit, formState } = formMethods;
+  const { handleSubmit, formState, watch } = formMethods;
+  const formValues = watch();
+
   const statusOptions = [
     { label: t('createProduct.status.available'), value: 'available' },
     { label: t('createProduct.status.sold'), value: 'sold' },
@@ -75,7 +77,7 @@ export default function ProductEditScreen() {
       }}
     >
       <Image
-        source={{ uri: getFileUrl(product.images[0]?.uri) }}
+        source={{ uri: getFileUrl(formValues.images[0]?.uri) }}
         className={cn('mb-8 w-full aspect-square rounded-md')}
         resizeMode="cover"
       />
