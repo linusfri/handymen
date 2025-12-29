@@ -73,7 +73,5 @@
         };
       };
     };
-
-    dotenv.enable = true;
   };
 }
