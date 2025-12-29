@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Text } from 'components/text/text';
 import { cn } from 'lib/utils';
 import Modal from 'components/modal/modal';
@@ -8,24 +8,30 @@ import { FormInput } from 'components/form/fields/input/controlled-input';
 import { FormSelect } from 'components/form/fields/select/controlled-select';
 import { Button } from 'components/ui/button';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
+import { Pressable, View } from 'react-native';
+import MaterialSymbol from 'lib/icons/material-symbols';
+import ImagePickerModal from 'components/modal/image-picker-modal';
+import { useProducts } from 'lib/hooks/product/use-products';
 
 export type ProductFormData = {
   name: string;
   description: string;
   status: string;
   price: string;
-  productImages: string[];
+  image_ids: number[];
 };
 
 export default function ProductCreateModal({
   modalVisible,
-  submitFn,
   setModalVisible,
 }: {
   modalVisible: boolean;
-  submitFn: (data: ProductFormData) => Promise<void>;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
+  const { createProduct } = useProducts();
+  const [imagePickerVisible, setImagePickerVisible] = useState(false);
+  const [selectedImageIds, setSelectedImageIds] = useState<number[]>([]);
+
   const { ...formMethods } = useForm<ProductFormData>({
     defaultValues: {
       name: '',
@@ -37,14 +43,34 @@ export default function ProductCreateModal({
 
   const { handleSubmit, formState, reset } = formMethods;
 
-  const statusOptions = [
+  const productStatusOptions = [
     { label: t('createProduct.status.available'), value: 'available' },
     { label: t('createProduct.status.sold'), value: 'sold' },
   ];
 
   async function onSubmit(data: ProductFormData) {
-    await submitFn(data);
+    createProduct(
+      {
+        name: data.name,
+        description: data.description,
+        status: data.status as 'available' | 'sold',
+        price: parseFloat(data.price),
+        image_ids: selectedImageIds,
+      },
+      {
+        onError: (error) => {
+          console.error('Error creating product:', error);
+        },
+      }
+    );
+
     reset();
+    setSelectedImageIds([]);
+    setModalVisible(false);
+  }
+
+  function removeImage(index: number) {
+    setSelectedImageIds((prev) => prev.filter((_, i) => i !== index));
   }
 
   return (
@@ -97,7 +123,7 @@ export default function ProductCreateModal({
             name="status"
             label={t('createProduct.fields.status')}
             placeholder={t('createProduct.fields.statusPlaceholder')}
-            options={statusOptions}
+            options={productStatusOptions}
             rules={{
               required: {
                 value: true,
@@ -107,6 +133,42 @@ export default function ProductCreateModal({
             variant="secondary"
             portalHost="modal-portal"
           />
+
+          {/* Image selection section */}
+          <View className={cn('mb-4')}>
+            <Text className={cn('mb-2 font-medium')}>{t('createProduct.fields.images')}</Text>
+            <Button
+              className={cn('mb-2')}
+              onPress={() => setImagePickerVisible(true)}
+              disabled={formState.isSubmitting}
+              variant="secondary"
+            >
+              <MaterialSymbol name="addPhotoAlternate" className={cn('mr-2 text-xl')} />
+              <Text className={cn('font-semibold')}>{t('createProduct.addImage')}</Text>
+            </Button>
+
+            {selectedImageIds.length > 0 && (
+              <View className={cn('mt-2 flex-row flex-wrap gap-2')}>
+                {selectedImageIds.map((id, index) => (
+                  <View key={`existing-${id}`} className={cn('relative')}>
+                    <View
+                      className={cn('h-20 w-20 items-center justify-center rounded-lg bg-gray-200')}
+                    >
+                      <Text className={cn('text-xs')}>ID: {id}</Text>
+                    </View>
+                    <Pressable
+                      className={cn(
+                        'absolute -right-2 -top-2 h-6 w-6 items-center justify-center rounded-full bg-destructive'
+                      )}
+                      onPress={() => removeImage(index)}
+                    >
+                      <MaterialSymbol name="close" className={cn('text-sm text-white')} />
+                    </Pressable>
+                  </View>
+                ))}
+              </View>
+            )}
+          </View>
 
           <FormInput
             editable={!formState.isSubmitting}
@@ -127,18 +189,36 @@ export default function ProductCreateModal({
             }}
           />
 
-          <Button className={cn('mb-4')} onPress={handleSubmit(onSubmit)} disabled={formState.isSubmitting}>
+          <Button
+            className={cn('mb-4')}
+            onPress={handleSubmit(onSubmit)}
+            disabled={formState.isSubmitting}
+          >
             <Text className={cn('font-semibold text-primary-foreground')}>
               {t('createProduct.submit')}
             </Text>
           </Button>
-          <Button className={cn('bg-destructive')} onPress={() => setModalVisible(false)} disabled={formState.isSubmitting}>
-            <Text className={cn('font-semibold bg-destructive text-primary-foreground')}>
+          <Button
+            className={cn('bg-destructive')}
+            onPress={() => setModalVisible(false)}
+            disabled={formState.isSubmitting}
+          >
+            <Text className={cn('bg-destructive font-semibold text-primary-foreground')}>
               {t('productDetail.cancel')}
             </Text>
           </Button>
         </FormProvider>
       </KeyboardAwareScrollView>
+
+      {imagePickerVisible && (
+        <ImagePickerModal
+          modalVisible={imagePickerVisible}
+          context='product'
+          setModalVisible={setImagePickerVisible}
+          selectedImageIds={selectedImageIds}
+          setSelectedImageIds={setSelectedImageIds}
+        />
+      )}
     </Modal>
   );
 }

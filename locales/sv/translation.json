@@ -26,12 +26,14 @@
     "title": "Lägg till produkt",
     "add": "Lägg till",
     "description": "Lägg till information om den produkt du vill skapa.",
+    "addImage": "Lägg till bild",
     "fields": {
       "name": "Produktnamn",
       "description": "Beskrivning",
       "status": "Status",
       "statusPlaceholder": "Välj status",
-      "price": "Pris"
+      "price": "Pris",
+      "images": "Bilder"
     },
     "status": {
       "available": "Tillgänglig",
@@ -86,5 +88,15 @@
     "greetings": {
       "welcome": "Välkommen!"
     }
+  },
+  "imagePicker": {
+    "title": "Välj bilder",
+    "description": "Välj befintliga bilder eller ladda upp nya",
+    "uploadNew": "Ladda upp ny bild",
+    "uploading": "Laddar upp...",
+    "loading": "Laddar bilder...",
+    "existingImages": "Befintliga bilder ({{selected}} valda)",
+    "select": "Välj ({{count}})",
+    "cancel": "Avbryt"
   }
 }

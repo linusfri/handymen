@@ -13,6 +13,7 @@ import * as React from 'react';
 export const glyphMap = {
   add: 'add',
   add_2: 'add_2',
+  addPhotoAlternate: 'add_photo_alternate',
   air: 'air',
   alternateEmail: 'alternate_email',
   apps: 'apps',
@@ -26,6 +27,7 @@ export const glyphMap = {
   blurCircular: 'blur_circular',
   businessCenter: 'business_center',
   checkBox: 'check_box',
+  check: 'check',
   checkBoxOutlineBlank: 'check_box_outline_blank',
   checkCircle: 'check_circle',
   circleCircle: 'circle_circle',

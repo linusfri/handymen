@@ -1,4 +1,4 @@
-import { ImageCreateData, ImageData } from "lib/types/image";
+import { ImageData } from "lib/types/file";
 
 export type ProductStatus = 'available' | 'sold';
 
@@ -18,7 +18,7 @@ export type ProductCreateData = {
   description?: string;
   status: ProductStatus;
   price: number;
-  images: ImageCreateData[];
+  image_ids: number[];
 };
 
 export type ProductUpdateData = {
@@ -26,5 +26,5 @@ export type ProductUpdateData = {
   description?: string;
   status: ProductStatus;
   price: number;
-  images: ImageCreateData[];
+  image_ids: number[];
 };

@@ -12,7 +12,7 @@ import { Button } from 'components/button/button';
 import { useProduct } from 'lib/hooks/product/use-product';
 import Loader from 'components/loader/loader';
 import { NotFound } from 'components/not-found/not-found';
-import { ImageData } from 'lib/types/image';
+import { ImageData } from 'lib/types/file';
 import { ScrollView } from 'react-native-gesture-handler';
 
 type EditProductFormData = {
