@@ -16,7 +16,7 @@ import { ProductStatus, ProductCreateData, ProductEditData } from 'lib/types/pro
 import { useProduct } from 'lib/hooks/product/use-product';
 import Loader from 'components/loader/loader';
 import { useFiles } from 'lib/hooks/image/use-images';
-import FileListing from 'components/image/image-listing';
+import FileListing from 'components/image/file-listing';
 
 export type ProductCreateFormData = {
   name: string;
@@ -132,8 +132,8 @@ export default function ProductEditOrCreateModal(
     );
   }
 
-  function removeFile(index: number) {
-    setSelectedFileIds((prev) => prev.filter((_, i) => i !== index));
+  function removeFile(fileId: number) {
+    setSelectedFileIds((prev) => prev.filter((id) => id !== fileId));
   }
 
   useEffect(() => {
@@ -241,10 +241,7 @@ export default function ProductEditOrCreateModal(
               <MaterialSymbol name="addPhotoAlternate" className={cn('mr-2 text-xl')} />
               <Text className={cn('font-semibold')}>{t('product.addImages')}</Text>
             </Button>
-            <FileListing
-              currentFileObjects={currentFileObjects}
-              removeFile={removeFile}
-            />
+            <FileListing currentFileObjects={currentFileObjects} removeFile={removeFile} />
           </View>
 
           <Separator className="mb-6" />

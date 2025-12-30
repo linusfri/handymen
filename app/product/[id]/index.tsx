@@ -9,6 +9,7 @@ import { useProduct } from 'lib/hooks/product/use-product';
 import Loader from 'components/loader/loader';
 import { NotFound } from 'components/not-found/not-found';
 import ProductEditOrCreateModal from 'components/modal/product-create-or-edit-modal';
+import FileListing from 'components/image/file-listing';
 
 export default function ProductDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -55,6 +56,7 @@ export default function ProductDetailScreen() {
           className={cn('aspect-square w-full rounded-md')}
           resizeMode="cover"
         />
+        <FileListing currentFileObjects={product.images.slice(1)} containerClassName={cn('mb-6')}/>
         <Text className={cn('mb-2 font-bold text-2xl')}>{product.name}</Text>
         <Text className={cn('mb-4 text-xl text-muted-foreground')}>
           {formatItemPrice(product.price)}
