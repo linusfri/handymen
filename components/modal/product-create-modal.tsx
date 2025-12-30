@@ -13,33 +13,61 @@ import MaterialSymbol from 'lib/icons/material-symbols';
 import ImagePickerModal from 'components/modal/image-picker-modal';
 import { useProducts } from 'lib/hooks/product/use-products';
 import { Separator } from 'components/ui/separator';
+import { Product, ProductStatus, ProductCreateData, ProductEditData } from 'lib/types/product';
 
-export type ProductFormData = {
+export type ProductCreateFormData = {
   name: string;
   description: string;
   status: string;
   price: string;
-  image_ids: number[];
 };
 
-export default function ProductCreateModal({
-  modalVisible,
-  setModalVisible,
-}: {
+export type ProductEditFormData = {
+  id: number;
+  name: string;
+  description: string;
+  status: string;
+  price: string;
+};
+
+type CreateProductModalProps = {
+  action: 'create';
   modalVisible: boolean;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
-}) {
-  const { createProduct } = useProducts();
+};
+
+type EditProductModalProps = {
+  action: 'edit';
+  product: Product;
+  modalVisible: boolean;
+  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export default function ProductEditOrCreateModal(
+  props: CreateProductModalProps | EditProductModalProps
+) {
   const [imagePickerVisible, setImagePickerVisible] = useState(false);
   const [selectedImageIds, setSelectedImageIds] = useState<number[]>([]);
+  const { createProduct, editProduct } = useProducts();
 
-  const { ...formMethods } = useForm<ProductFormData>({
-    defaultValues: {
-      name: '',
-      description: '',
-      status: 'available',
-      price: '',
-    },
+  const defaultValues =
+    props.action === 'create'
+      ? ({
+          name: '',
+          description: '',
+          status: 'available' as ProductStatus,
+          price: '',
+        } as ProductCreateFormData)
+      : ({
+          id: props.product.id,
+          name: props.product.name,
+          description: props.product.description || '',
+          status: props.product.status as ProductStatus,
+          price: props.product.price.toString(),
+        } as ProductEditFormData);
+
+  const { ...formMethods } = useForm<ProductCreateFormData | ProductEditFormData>({
+    defaultValues,
   });
 
   const { handleSubmit, formState, reset } = formMethods;
@@ -49,25 +77,45 @@ export default function ProductCreateModal({
     { label: t('createProduct.status.sold'), value: 'sold' },
   ];
 
-  async function onSubmit(data: ProductFormData) {
-    createProduct(
-      {
+  async function onSubmit(data: ProductCreateFormData | ProductEditFormData) {
+    if (props.action === 'create') {
+      submitCreateProduct({
         name: data.name,
         description: data.description,
-        status: data.status as 'available' | 'sold',
+        status: data.status as ProductStatus,
         price: parseFloat(data.price),
         image_ids: selectedImageIds,
-      },
-      {
-        onError: (error) => {
-          console.error('Error creating product:', error);
-        },
-      }
-    );
+      } as ProductCreateData);
+    } else {
+      submitEditProduct({
+        id: props.product.id,
+        name: data.name,
+        description: data.description,
+        status: data.status as ProductStatus,
+        price: parseFloat(data.price),
+        image_ids: selectedImageIds,
+      });
+    }
 
     reset();
     setSelectedImageIds([]);
-    setModalVisible(false);
+    props.setModalVisible(false);
+  }
+
+  async function submitCreateProduct(data: ProductCreateData) {
+    createProduct(data, {
+      onError: (error) => {
+        console.error('Error creating product:', error);
+      },
+    });
+  }
+
+  async function submitEditProduct(data: ProductEditData) {
+    editProduct(data, {
+      onError: (error) => {
+        console.error('Error editing product:', error);
+      },
+    });
   }
 
   function removeImage(index: number) {
@@ -76,7 +124,7 @@ export default function ProductCreateModal({
 
   return (
     <Modal
-      visible={modalVisible}
+      visible={props.modalVisible}
       statusBarTranslucent={true} // Android only, cover the status bar fullscreen
       presentationStyle="fullScreen" // iOS only
       contentClassName={cn('flex-1 rounded-none m-0 w-full')}
@@ -203,7 +251,7 @@ export default function ProductCreateModal({
           </Button>
           <Button
             className={cn('bg-destructive')}
-            onPress={() => setModalVisible(false)}
+            onPress={() => props.setModalVisible(false)}
             disabled={formState.isSubmitting}
           >
             <Text className={cn('bg-destructive font-semibold text-primary-foreground')}>

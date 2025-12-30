@@ -16,6 +16,7 @@
     }
   },
   "navigation": {
+    "go-back": "Gå tillbaka",
     "tabs": {
       "home": "Hem",
       "items": "Mina produkter",
@@ -83,6 +84,10 @@
       "title": "Inget hittades",
       "description": "Inga objekt att visa"
     }
+  },
+  "pageNotFound": {
+    "title": "Sidan hittades inte",
+    "description": "Sidan du letar efter existerar inte eller har flyttats."
   },
   "common": {
     "greetings": {

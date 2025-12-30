@@ -8,7 +8,7 @@ import { useProducts } from 'lib/hooks/product/use-products';
 import { ProductListing } from 'components/list/product-listing';
 import Loader from 'components/loader/loader';
 import { NotFound } from 'components/not-found/not-found';
-import ProductCreateModal from 'components/modal/product-create-modal';
+import ProductEditOrCreateModal from 'components/modal/product-create-modal';
 
 export default function Home() {
   const [productCreateModalVisible, setProductCreateModalVisible] = useState(false);
@@ -21,9 +21,9 @@ export default function Home() {
   }
 
   return (
-    <View className="flex-1 justify-center p-4">
+    <View className="flex-1 justify-center px-4 pb-4">
       {products && products.length > 0 ? (
-        <ProductListing items={products} className="w-full" />
+        <ProductListing items={products} className="w-full pt-4" />
       ) : (
         <NotFound className={cn('flex-1')} title={t('products.noProducts')} />
       )}
@@ -37,7 +37,8 @@ export default function Home() {
         </Pressable>
       </View>
 
-      <ProductCreateModal
+      <ProductEditOrCreateModal
+        action='create'
         modalVisible={productCreateModalVisible}
         setModalVisible={setProductCreateModalVisible}
       />

@@ -34,6 +34,7 @@ export const glyphMap = {
   close: 'close',
   darkMode: 'dark_mode',
   eggAlt: 'egg_alt',
+  errorOutline: 'error_outline',
   grain: 'grain',
   groups: 'groups',
   home: 'home',

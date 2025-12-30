@@ -21,7 +21,8 @@ export type ProductCreateData = {
   image_ids: number[];
 };
 
-export type ProductUpdateData = {
+export type ProductEditData = {
+  id: number;
   name: string;
   description?: string;
   status: ProductStatus;

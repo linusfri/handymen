@@ -16,14 +16,6 @@ export default function ProductLayout() {
           ...commonSubPageHeaderTheme,
         }}
       />
-      <Stack.Screen
-        name='[id]/edit'
-        options={{
-          headerShown: true,
-          title: t('productDetail.editTitle'),
-          ...commonSubPageHeaderTheme,
-        }}
-      />
     </Stack>
   );
 }
