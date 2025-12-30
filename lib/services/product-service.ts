@@ -13,8 +13,8 @@ export async function createProduct(requestData: ProductCreateData) {
   return (await axiosClient.post<Product>('/products', requestData)).data;
 }
 
-export async function editProduct(requestData: ProductEditData) {
-  return (await axiosClient.put<Product>(`/products/${requestData.id}`, requestData)).data;
+export async function updateProduct(id: number, requestData: ProductEditData) {
+  return (await axiosClient.put<Product>(`/products/${id}`, requestData)).data;
 }
 
 export async function deleteProduct(id: number) {

@@ -22,7 +22,6 @@ export type ProductCreateData = {
 };
 
 export type ProductEditData = {
-  id: number;
   name: string;
   description?: string;
   status: ProductStatus;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text } from 'components/text/text';
 import { cn } from 'lib/utils';
 import Modal from 'components/modal/modal';
@@ -11,9 +11,10 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import { Pressable, View } from 'react-native';
 import MaterialSymbol from 'lib/icons/material-symbols';
 import ImagePickerModal from 'components/modal/image-picker-modal';
-import { useProducts } from 'lib/hooks/product/use-products';
 import { Separator } from 'components/ui/separator';
-import { Product, ProductStatus, ProductCreateData, ProductEditData } from 'lib/types/product';
+import { ProductStatus, ProductCreateData, ProductEditData } from 'lib/types/product';
+import { useProduct } from 'lib/hooks/product/use-product';
+import Loader from 'components/loader/loader';
 
 export type ProductCreateFormData = {
   name: string;
@@ -23,7 +24,6 @@ export type ProductCreateFormData = {
 };
 
 export type ProductEditFormData = {
-  id: number;
   name: string;
   description: string;
   status: string;
@@ -36,19 +36,25 @@ type CreateProductModalProps = {
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-type EditProductModalProps = {
+type UpdateProductModalProps = {
   action: 'edit';
-  product: Product;
+  productId: number;
   modalVisible: boolean;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function ProductEditOrCreateModal(
-  props: CreateProductModalProps | EditProductModalProps
+  props: CreateProductModalProps | UpdateProductModalProps
 ) {
   const [imagePickerVisible, setImagePickerVisible] = useState(false);
   const [selectedImageIds, setSelectedImageIds] = useState<number[]>([]);
-  const { createProduct, editProduct } = useProducts();
+  const { product, isLoading, createProduct, updateProduct } = useProduct(
+    props.action === 'edit' ? props.productId : undefined
+  );
+
+  if (props.action === 'edit' && (isLoading || !product)) {
+    return <Loader text={t('states.loading')} />;
+  }
 
   const defaultValues =
     props.action === 'create'
@@ -59,11 +65,11 @@ export default function ProductEditOrCreateModal(
           price: '',
         } as ProductCreateFormData)
       : ({
-          id: props.product.id,
-          name: props.product.name,
-          description: props.product.description || '',
-          status: props.product.status as ProductStatus,
-          price: props.product.price.toString(),
+          id: product!.id,
+          name: product!.name,
+          description: product!.description || '',
+          status: product!.status as ProductStatus,
+          price: product!.price.toString(),
         } as ProductEditFormData);
 
   const { ...formMethods } = useForm<ProductCreateFormData | ProductEditFormData>({
@@ -73,8 +79,8 @@ export default function ProductEditOrCreateModal(
   const { handleSubmit, formState, reset } = formMethods;
 
   const productStatusOptions = [
-    { label: t('createProduct.status.available'), value: 'available' },
-    { label: t('createProduct.status.sold'), value: 'sold' },
+    { label: t('product.status.available'), value: 'available' },
+    { label: t('product.status.sold'), value: 'sold' },
   ];
 
   async function onSubmit(data: ProductCreateFormData | ProductEditFormData) {
@@ -87,8 +93,7 @@ export default function ProductEditOrCreateModal(
         image_ids: selectedImageIds,
       } as ProductCreateData);
     } else {
-      submitEditProduct({
-        id: props.product.id,
+      submitUpdateProduct({
         name: data.name,
         description: data.description,
         status: data.status as ProductStatus,
@@ -110,17 +115,27 @@ export default function ProductEditOrCreateModal(
     });
   }
 
-  async function submitEditProduct(data: ProductEditData) {
-    editProduct(data, {
-      onError: (error) => {
-        console.error('Error editing product:', error);
-      },
-    });
+  async function submitUpdateProduct(data: ProductEditData) {
+    updateProduct(
+      { id: product!.id, data },
+      {
+        onError: (error) => {
+          console.error('Error editing product:', error);
+        },
+      }
+    );
   }
 
   function removeImage(index: number) {
     setSelectedImageIds((prev) => prev.filter((_, i) => i !== index));
   }
+
+  useEffect(() => {
+    if (props.action === 'edit') {
+      const imageIds = product!.images.map((image) => image.id);
+      setSelectedImageIds(imageIds);
+    }
+  }, [props.modalVisible]);
 
   return (
     <Modal
@@ -135,24 +150,30 @@ export default function ProductEditOrCreateModal(
         keyboardShouldPersistTaps="handled"
         bottomOffset={40}
       >
-        <Text className={cn('mb-2 font-bold text-lg')}>{t('createProduct.title')}</Text>
+        <Text className={cn('mb-2 font-bold text-lg')}>
+          {props.action === 'create' ? t('product.create.title') : t('product.edit.title')}
+        </Text>
         <FormProvider {...formMethods}>
-          <Text className={cn('mb-8')}>{t('createProduct.description')}</Text>
+          <Text className={cn('mb-8')}>
+            {props.action === 'create'
+              ? t('product.create.description')
+              : t('product.edit.description')}
+          </Text>
 
           <FormInput
             editable={!formState.isSubmitting}
             containerClassName="mb-4"
             name="name"
-            label={t('createProduct.fields.name')}
-            placeholder={t('createProduct.fields.name')}
+            label={t('product.fields.name')}
+            placeholder={t('product.fields.name')}
             rules={{
               required: {
                 value: true,
-                message: t('createProduct.validation.nameRequired'),
+                message: t('product.validation.nameRequired'),
               },
               maxLength: {
                 value: 255,
-                message: t('createProduct.validation.nameMaxLength'),
+                message: t('product.validation.nameMaxLength'),
               },
             }}
           />
@@ -161,8 +182,8 @@ export default function ProductEditOrCreateModal(
             editable={!formState.isSubmitting}
             containerClassName="mb-4"
             name="description"
-            label={t('createProduct.fields.description')}
-            placeholder={t('createProduct.fields.description')}
+            label={t('product.fields.description')}
+            placeholder={t('product.fields.description')}
             multiline
             numberOfLines={4}
           />
@@ -170,13 +191,13 @@ export default function ProductEditOrCreateModal(
           <FormSelect
             containerClassName="mb-4"
             name="status"
-            label={t('createProduct.fields.status')}
-            placeholder={t('createProduct.fields.statusPlaceholder')}
+            label={t('product.fields.status')}
+            placeholder={t('product.fields.statusPlaceholder')}
             options={productStatusOptions}
             rules={{
               required: {
                 value: true,
-                message: t('createProduct.validation.statusRequired'),
+                message: t('product.validation.statusRequired'),
               },
             }}
             variant="secondary"
@@ -187,24 +208,24 @@ export default function ProductEditOrCreateModal(
             editable={!formState.isSubmitting}
             containerClassName="mb-6"
             name="price"
-            label={t('createProduct.fields.price')}
-            placeholder={t('createProduct.fields.price')}
+            label={t('product.fields.price')}
+            placeholder={t('product.fields.price')}
             keyboardType="decimal-pad"
             rules={{
               required: {
                 value: true,
-                message: t('createProduct.validation.priceRequired'),
+                message: t('product.validation.priceRequired'),
               },
               pattern: {
                 value: /^\d+(\.\d{1,2})?$/,
-                message: t('createProduct.validation.priceInvalid'),
+                message: t('product.validation.priceInvalid'),
               },
             }}
           />
 
           {/* Image selection section */}
           <View className={cn('mb-4')}>
-            <Text className={cn('mb-2 font-medium')}>{t('createProduct.fields.images')}</Text>
+            <Text className={cn('mb-2 font-medium')}>{t('product.fields.images')}</Text>
             <Button
               className={cn('mb-2')}
               onPress={() => setImagePickerVisible(true)}
@@ -212,7 +233,7 @@ export default function ProductEditOrCreateModal(
               variant="secondary"
             >
               <MaterialSymbol name="addPhotoAlternate" className={cn('mr-2 text-xl')} />
-              <Text className={cn('font-semibold')}>{t('createProduct.addImages')}</Text>
+              <Text className={cn('font-semibold')}>{t('product.addImages')}</Text>
             </Button>
 
             {selectedImageIds.length > 0 && (
@@ -246,7 +267,7 @@ export default function ProductEditOrCreateModal(
             disabled={formState.isSubmitting}
           >
             <Text className={cn('font-semibold text-primary-foreground')}>
-              {t('createProduct.submit')}
+              {props.action === 'create' ? t('product.create.submit') : t('product.edit.submit')}
             </Text>
           </Button>
           <Button

@@ -8,7 +8,7 @@ import { useProducts } from 'lib/hooks/product/use-products';
 import { ProductListing } from 'components/list/product-listing';
 import Loader from 'components/loader/loader';
 import { NotFound } from 'components/not-found/not-found';
-import ProductEditOrCreateModal from 'components/modal/product-create-modal';
+import ProductEditOrCreateModal from 'components/modal/product-create-or-edit-modal';
 
 export default function Home() {
   const [productCreateModalVisible, setProductCreateModalVisible] = useState(false);

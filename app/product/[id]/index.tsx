@@ -1,20 +1,21 @@
 import React from 'react';
 import { View, ScrollView, Alert, Image } from 'react-native';
-import { Link, router, useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { Text } from 'components/text/text';
-import { cn, getFileUrl } from 'lib/utils';
+import { cn, getFileUrl, formatItemPrice } from 'lib/utils';
 import { Button } from 'components/ui/button';
 import { t } from 'lib/i18n';
 import { useProduct } from 'lib/hooks/product/use-product';
 import Loader from 'components/loader/loader';
 import { NotFound } from 'components/not-found/not-found';
 import { deleteProduct } from 'lib/services/product-service';
+import ProductEditOrCreateModal from 'components/modal/product-create-or-edit-modal';
 
 export default function ProductDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const productId = parseInt(id ?? '0');
-
   const { product, isLoading, isDeleting } = useProduct(productId);
+  const [productEditModalVisible, setProductEditModalVisible] = React.useState(false);
 
   if (isLoading) {
     return <Loader text={t('states.loading')} />;
@@ -56,7 +57,7 @@ export default function ProductDetailScreen() {
           resizeMode="cover"
         />
         <Text className={cn('mb-2 font-bold text-2xl')}>{product.name}</Text>
-        <Text className={cn('mb-4 text-xl text-muted-foreground')}>${product.price}</Text>
+        <Text className={cn('mb-4 text-xl text-muted-foreground')}>{formatItemPrice(product.price)}</Text>
         <Text
           className={cn(
             'mb-4 text-sm',
@@ -64,8 +65,8 @@ export default function ProductDetailScreen() {
           )}
         >
           {product.status === 'available'
-            ? t('createProduct.status.available')
-            : t('createProduct.status.sold')}
+            ? t('product.status.available')
+            : t('product.status.sold')}
         </Text>
         {product.description && (
           <View className={cn('mb-6')}>
@@ -75,18 +76,25 @@ export default function ProductDetailScreen() {
         )}
 
         <View className={cn('mt-4 gap-3')}>
-          <Link className={cn('flex bg-primary p-3 rounded-md')} href={`/product/${product.id}/edit`}>
+          <Button size={'lg'} onPress={() => setProductEditModalVisible(true)}>
             <Text className={cn('font-semibold text-center text-primary-foreground')}>
               {t('productDetail.edit')}
             </Text>
-          </Link>
-          <Button variant="destructive" onPress={handleDelete} disabled={isDeleting}>
+          </Button>
+          <Button variant="destructive" size={'sm'} onPress={handleDelete} disabled={isDeleting}>
             <Text className={cn('font-semibold text-primary-foreground')}>
               {t('productDetail.delete')}
             </Text>
           </Button>
         </View>
       </View>
+
+      <ProductEditOrCreateModal 
+        action="edit"
+        productId={product.id}
+        setModalVisible={setProductEditModalVisible}
+        modalVisible={productEditModalVisible}
+      />
     </ScrollView>
   );
 }

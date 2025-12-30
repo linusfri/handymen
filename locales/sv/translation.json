@@ -23,11 +23,18 @@
       "settings": "Inställningar"
     }
   },
-  "createProduct": {
-    "title": "Lägg till produkt",
-    "add": "Lägg till",
-    "description": "Lägg till information om den produkt du vill skapa.",
+  "product": {
+    "create": {
+      "title": "Skapa produkt", 
+      "description": "Lägg till information om den produkt du vill skapa.",
+      "submit": "Lägg till produkt"
+    },
     "addImages": "Lägg till bilder",
+    "edit": {
+      "title": "Redigera produkt",
+      "description": "Uppdatera informationen om din produkt.",
+      "submit": "Uppdatera produkt"
+    },
     "fields": {
       "name": "Produktnamn",
       "description": "Beskrivning",
@@ -46,8 +53,7 @@
       "statusRequired": "Status är obligatoriskt",
       "priceRequired": "Pris är obligatoriskt",
       "priceInvalid": "Ange ett giltigt pris (t.ex. 10.99)"
-    },
-    "submit": "Skapa produkt"
+    }
   },
   "products": {
     "noProducts": "Inga produkter tillgängliga.",
