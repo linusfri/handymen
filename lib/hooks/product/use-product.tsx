@@ -30,6 +30,7 @@ export function useProduct(id?: number) {
     mutationFn: (id: number) => deleteProduct(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['products'] });
+      queryClient.invalidateQueries({ queryKey: ['product', id] });
     },
   });
 

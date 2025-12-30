@@ -8,13 +8,12 @@ import { t } from 'lib/i18n';
 import { useProduct } from 'lib/hooks/product/use-product';
 import Loader from 'components/loader/loader';
 import { NotFound } from 'components/not-found/not-found';
-import { deleteProduct } from 'lib/services/product-service';
 import ProductEditOrCreateModal from 'components/modal/product-create-or-edit-modal';
 
 export default function ProductDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const productId = parseInt(id ?? '0');
-  const { product, isLoading, isDeleting } = useProduct(productId);
+  const { product, isLoading, isDeleting, deleteProduct } = useProduct(productId);
   const [productEditModalVisible, setProductEditModalVisible] = React.useState(false);
 
   if (isLoading) {
