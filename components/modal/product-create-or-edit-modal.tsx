@@ -8,13 +8,15 @@ import { FormInput } from 'components/form/fields/input/controlled-input';
 import { FormSelect } from 'components/form/fields/select/controlled-select';
 import { Button } from 'components/ui/button';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
-import { Pressable, View } from 'react-native';
+import { View } from 'react-native';
 import MaterialSymbol from 'lib/icons/material-symbols';
-import ImagePickerModal from 'components/modal/image-picker-modal';
+import FilePickerModal from 'components/modal/image-picker-modal';
 import { Separator } from 'components/ui/separator';
 import { ProductStatus, ProductCreateData, ProductEditData } from 'lib/types/product';
 import { useProduct } from 'lib/hooks/product/use-product';
 import Loader from 'components/loader/loader';
+import { useFiles } from 'lib/hooks/image/use-images';
+import FileListing from 'components/image/image-listing';
 
 export type ProductCreateFormData = {
   name: string;
@@ -47,7 +49,11 @@ export default function ProductEditOrCreateModal(
   props: CreateProductModalProps | UpdateProductModalProps
 ) {
   const [imagePickerVisible, setImagePickerVisible] = useState(false);
-  const [selectedImageIds, setSelectedImageIds] = useState<number[]>([]);
+  const [selectedFileIds, setSelectedFileIds] = useState<number[]>([]);
+  const { files } = useFiles();
+
+  const currentFileObjects = files?.filter((file) => selectedFileIds.includes(file.id));
+
   const { product, isLoading, createProduct, updateProduct } = useProduct(
     props.action === 'edit' ? props.productId : undefined
   );
@@ -90,7 +96,7 @@ export default function ProductEditOrCreateModal(
         description: data.description,
         status: data.status as ProductStatus,
         price: parseFloat(data.price),
-        image_ids: selectedImageIds,
+        image_ids: selectedFileIds,
       } as ProductCreateData);
     } else {
       submitUpdateProduct({
@@ -98,12 +104,12 @@ export default function ProductEditOrCreateModal(
         description: data.description,
         status: data.status as ProductStatus,
         price: parseFloat(data.price),
-        image_ids: selectedImageIds,
+        image_ids: selectedFileIds,
       });
     }
 
     reset();
-    setSelectedImageIds([]);
+    setSelectedFileIds([]);
     props.setModalVisible(false);
   }
 
@@ -126,14 +132,14 @@ export default function ProductEditOrCreateModal(
     );
   }
 
-  function removeImage(index: number) {
-    setSelectedImageIds((prev) => prev.filter((_, i) => i !== index));
+  function removeFile(index: number) {
+    setSelectedFileIds((prev) => prev.filter((_, i) => i !== index));
   }
 
   useEffect(() => {
     if (props.action === 'edit') {
       const imageIds = product!.images.map((image) => image.id);
-      setSelectedImageIds(imageIds);
+      setSelectedFileIds(imageIds);
     }
   }, [props.modalVisible]);
 
@@ -235,28 +241,10 @@ export default function ProductEditOrCreateModal(
               <MaterialSymbol name="addPhotoAlternate" className={cn('mr-2 text-xl')} />
               <Text className={cn('font-semibold')}>{t('product.addImages')}</Text>
             </Button>
-
-            {selectedImageIds.length > 0 && (
-              <View className={cn('mt-2 flex-row flex-wrap gap-2')}>
-                {selectedImageIds.map((id, index) => (
-                  <View key={`existing-${id}`} className={cn('relative')}>
-                    <View
-                      className={cn('h-20 w-20 items-center justify-center rounded-lg bg-gray-200')}
-                    >
-                      <Text className={cn('text-xs')}>ID: {id}</Text>
-                    </View>
-                    <Pressable
-                      className={cn(
-                        'absolute -right-2 -top-2 h-6 w-6 items-center justify-center rounded-full bg-destructive'
-                      )}
-                      onPress={() => removeImage(index)}
-                    >
-                      <MaterialSymbol name="close" className={cn('text-sm text-white')} />
-                    </Pressable>
-                  </View>
-                ))}
-              </View>
-            )}
+            <FileListing
+              currentFileObjects={currentFileObjects}
+              removeFile={removeFile}
+            />
           </View>
 
           <Separator className="mb-6" />
@@ -283,12 +271,12 @@ export default function ProductEditOrCreateModal(
       </KeyboardAwareScrollView>
 
       {imagePickerVisible && (
-        <ImagePickerModal
+        <FilePickerModal
           modalVisible={imagePickerVisible}
           context="product"
           setModalVisible={setImagePickerVisible}
-          selectedImageIds={selectedImageIds}
-          setSelectedImageIds={setSelectedImageIds}
+          selectedFileIds={selectedFileIds}
+          setSelectedFileIds={setSelectedFileIds}
         />
       )}
     </Modal>

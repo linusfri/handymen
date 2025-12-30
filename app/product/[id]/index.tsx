@@ -34,12 +34,12 @@ export default function ProductDetailScreen() {
         text: t('productDetail.delete'),
         style: 'destructive',
         onPress: async () => {
-          try {
-            await deleteProduct(product!.id);
-            router.back();
-          } catch (error) {
-            console.error('Error deleting product:', error);
-          }
+          await deleteProduct(product!.id, {
+            onError: (error) => {
+              console.error('Error deleting product:', error);
+            },
+          });
+          router.back();
         },
       },
     ]);
@@ -56,7 +56,9 @@ export default function ProductDetailScreen() {
           resizeMode="cover"
         />
         <Text className={cn('mb-2 font-bold text-2xl')}>{product.name}</Text>
-        <Text className={cn('mb-4 text-xl text-muted-foreground')}>{formatItemPrice(product.price)}</Text>
+        <Text className={cn('mb-4 text-xl text-muted-foreground')}>
+          {formatItemPrice(product.price)}
+        </Text>
         <Text
           className={cn(
             'mb-4 text-sm',
@@ -76,7 +78,7 @@ export default function ProductDetailScreen() {
 
         <View className={cn('mt-4 gap-3')}>
           <Button size={'lg'} onPress={() => setProductEditModalVisible(true)}>
-            <Text className={cn('font-semibold text-center text-primary-foreground')}>
+            <Text className={cn('text-center font-semibold text-primary-foreground')}>
               {t('productDetail.edit')}
             </Text>
           </Button>
@@ -88,7 +90,7 @@ export default function ProductDetailScreen() {
         </View>
       </View>
 
-      <ProductEditOrCreateModal 
+      <ProductEditOrCreateModal
         action="edit"
         productId={product.id}
         setModalVisible={setProductEditModalVisible}

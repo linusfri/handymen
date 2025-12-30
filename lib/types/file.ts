@@ -9,7 +9,7 @@ export type ExistingImage = {
   id: number;
 };
 
-export type ImageData = {
+export type FileData = {
   id: number;
   data?: string;
   filename: string;

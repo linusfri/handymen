@@ -1,5 +1,5 @@
 import axiosClient from 'lib/api/axios-client';
-import { FileContext, ImageData } from 'lib/types/file';
+import { FileContext, FileData } from 'lib/types/file';
 
 type CreateFilesRequest = {
   files: {
@@ -17,19 +17,19 @@ type UpdateFileRequest = {
 };
 
 export async function getFiles() {
-  return (await axiosClient.get<ImageData[]>('/files')).data;
+  return (await axiosClient.get<FileData[]>('/files')).data;
 }
 
 export async function getFile(id: number) {
-  return (await axiosClient.get<ImageData>(`/files/${id}`)).data;
+  return (await axiosClient.get<FileData>(`/files/${id}`)).data;
 }
 
 export async function createFiles(input: CreateFilesRequest) {
-  return (await axiosClient.post<ImageData>('/files', input)).data;
+  return (await axiosClient.post<FileData>('/files', input)).data;
 }
 
 export async function updateFile(id: number, input: UpdateFileRequest) {
-  return (await axiosClient.put<ImageData>(`/files/${id}`, input)).data;
+  return (await axiosClient.put<FileData>(`/files/${id}`, input)).data;
 }
 
 export async function deleteFile(id: number) {

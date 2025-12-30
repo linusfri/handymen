@@ -1,0 +1,34 @@
+import * as React from 'react';
+import { View, Image, Pressable } from 'react-native';
+import { cn, getFileUrl } from 'lib/utils';
+import MaterialSymbol from 'lib/icons/material-symbols';
+
+export default function FileListing({ currentFileObjects, removeFile }: {
+  currentFileObjects: { id: number; uri: string }[] | undefined;
+  removeFile: (index: number) => void;
+}) {
+  return (
+    currentFileObjects &&
+    currentFileObjects.length > 0 && (
+      <View className={cn('mt-2 flex-row flex-wrap gap-2')}>
+        {currentFileObjects.map((file, index) => (
+          <View key={`existing-${file.id}`} className={cn('relative')}>
+            <Image
+              source={{ uri: getFileUrl(file.uri) }}
+              className={cn('h-20 w-20 rounded-md')}
+              resizeMode="cover"
+            />
+            <Pressable
+              className={cn(
+                'absolute -right-2 -top-2 h-6 w-6 items-center justify-center rounded-full bg-destructive'
+              )}
+              onPress={() => removeFile(index)}
+            >
+              <MaterialSymbol name="close" className={cn('text-sm text-white')} />
+            </Pressable>
+          </View>
+        ))}
+      </View>
+    )
+  );
+}

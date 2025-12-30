@@ -9,34 +9,34 @@ import { useFiles } from 'lib/hooks/image/use-images';
 import Loader from 'components/loader/loader';
 import { Dimensions, Image, Pressable, View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { FileContext, ImageData } from 'lib/types/file';
+import { FileContext, FileData } from 'lib/types/file';
 import MaterialSymbol from 'lib/icons/material-symbols';
 
 type ImagePickerModalProps = {
   modalVisible: boolean;
   context: FileContext;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  selectedImageIds: number[];
-  setSelectedImageIds: React.Dispatch<React.SetStateAction<number[]>>;
+  selectedFileIds: number[];
+  setSelectedFileIds: React.Dispatch<React.SetStateAction<number[]>>;
 };
 
-export default function ImagePickerModal({
+export default function FilePickerModal({
   modalVisible,
   context,
   setModalVisible,
-  selectedImageIds,
-  setSelectedImageIds,
+  selectedFileIds,
+  setSelectedFileIds,
 }: ImagePickerModalProps) {
   const { files, isLoading, uploadFiles, isUploading } = useFiles();
   const screenWidth = Dimensions.get('window').width;
 
-  function toggleImageSelection(imageId: number) {
-    setSelectedImageIds((prev) =>
+  function toggleFileSelection(imageId: number) {
+    setSelectedFileIds((prev) =>
       prev.includes(imageId) ? prev.filter((id) => id !== imageId) : [...prev, imageId]
     );
   }
 
-  async function handleUploadNewImage() {
+  async function handleUploadNewFile() {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ['images'],
       allowsEditing: true,
@@ -73,7 +73,7 @@ export default function ImagePickerModal({
   }
 
   function handleCancel() {
-    setSelectedImageIds([]);
+    setSelectedFileIds([]);
     setModalVisible(false);
   }
 
@@ -94,7 +94,7 @@ export default function ImagePickerModal({
         <Text className={cn('mb-4')}>{t('imagePicker.description')}</Text>
 
         {/* Upload new image button */}
-        <Button className={cn('mb-6')} onPress={handleUploadNewImage} disabled={isUploading}>
+        <Button className={cn('mb-6')} onPress={handleUploadNewFile} disabled={isUploading}>
           <MaterialSymbol
             name="addPhotoAlternate"
             className={cn('mr-2 text-xl text-primary-foreground')}
@@ -110,16 +110,16 @@ export default function ImagePickerModal({
         ) : (
           <>
             <Text className={cn('mb-2 font-semibold')}>
-              {t('imagePicker.existingImages', { selected: selectedImageIds.length })}
+              {t('imagePicker.existingImages', { selected: selectedFileIds.length })}
             </Text>
             <View className={cn('mb-6 flex-row flex-wrap gap-2')}>
-              {files?.map((image: ImageData) => {
-                const isSelected = selectedImageIds.includes(image.id);
+              {files?.map((image: FileData) => {
+                const isSelected = selectedFileIds.includes(image.id);
                 return (
                   <Pressable
                     style={{ width: screenWidth / 2 - 32 }}
                     key={image.id}
-                    onPress={() => toggleImageSelection(image.id)}
+                    onPress={() => toggleFileSelection(image.id)}
                     className={cn('relative rounded-md')}
                   >
                     <Image
@@ -153,10 +153,10 @@ export default function ImagePickerModal({
           <Button
             className={cn('mb-4')}
             onPress={handleSubmit}
-            disabled={selectedImageIds.length === 0}
+            disabled={selectedFileIds.length === 0}
           >
             <Text className={cn('font-semibold text-primary-foreground')}>
-              {t('imagePicker.select', { count: selectedImageIds.length })}
+              {t('imagePicker.select', { count: selectedFileIds.length })}
             </Text>
           </Button>
           <Button className={cn('bg-destructive')} onPress={handleCancel}>

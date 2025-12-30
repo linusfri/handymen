@@ -1,4 +1,4 @@
-import { ImageData } from "lib/types/file";
+import { FileData } from "lib/types/file";
 
 export type ProductStatus = 'available' | 'sold';
 
@@ -7,7 +7,7 @@ export type Product = {
   name: string;
   description: string | null;
   status: ProductStatus;
-  images: ImageData[];
+  images: FileData[];
   price: number;
   created_at?: number; // Unix timestamp
   updated_at?: number; // Unix timestamp
