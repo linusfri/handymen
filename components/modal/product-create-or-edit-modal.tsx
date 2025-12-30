@@ -71,18 +71,18 @@ export default function ProductEditOrCreateModal(
           price: '',
         } as ProductCreateFormData)
       : ({
-          id: product!.id,
-          name: product!.name,
-          description: product!.description || '',
-          status: product!.status as ProductStatus,
-          price: product!.price.toString(),
+          id: product?.id,
+          name: product?.name,
+          description: product?.description || '',
+          status: product?.status as ProductStatus,
+          price: product?.price.toString(),
         } as ProductEditFormData);
 
   const { ...formMethods } = useForm<ProductCreateFormData | ProductEditFormData>({
     defaultValues,
   });
 
-  const { handleSubmit, formState, reset } = formMethods;
+  const { handleSubmit, formState, reset, setValue } = formMethods;
 
   const productStatusOptions = [
     { label: t('product.status.available'), value: 'available' },
@@ -140,6 +140,11 @@ export default function ProductEditOrCreateModal(
     if (props.action === 'edit') {
       const imageIds = product!.images.map((image) => image.id);
       setSelectedFileIds(imageIds);
+
+      setValue('name', product!.name);
+      setValue('description', product!.description || '');
+      setValue('status', product!.status);
+      setValue('price', product!.price.toString());
     }
   }, [props.modalVisible]);
 
