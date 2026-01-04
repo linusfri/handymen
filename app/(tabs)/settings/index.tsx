@@ -11,7 +11,6 @@ import { Dimensions } from 'react-native';
 export default function Settings() {
   const { initiateLogin } = useFacebookLogin();
   const [redirectUrl, setRedirectUrl] = React.useState<string | null>(null);
-  const [fbUserToken, setFbUserToken] = React.useState<string | null>(null);
   const [showWebview, setShowWebview] = React.useState(false);
 
   async function fbLogin() {
@@ -19,7 +18,6 @@ export default function Settings() {
       onSuccess: (loginResponse) => {
         if (loginResponse) {
           setRedirectUrl(loginResponse.redirect_url);
-          setFbUserToken(loginResponse.fb_user_token);
           setShowWebview(true);
         }
       },
@@ -41,15 +39,20 @@ export default function Settings() {
       </View>
 
       <Modal style={{ flex: 1 }} visible={showWebview} title={t('settings.facebookLogin')}>
-        <WebView
-          style={{ height: Dimensions.get('window').height, width: Dimensions.get('window').width }}
-          source={{
-            uri: redirectUrl || '',
-            headers: {
-              Cookie: `fb_user_token=${fbUserToken}`,
-            },
-          }}
-        />
+        <Button onPress={() => setShowWebview(false)}>
+          <Text>Close</Text>
+        </Button>
+        <View style={{ flex: 1 }}>
+          <WebView
+            style={{
+              height: Dimensions.get('window').height,
+              width: Dimensions.get('window').width,
+            }}
+            source={{
+              uri: `${redirectUrl}`,
+            }}
+          />
+        </View>
       </Modal>
     </ScrollView>
   );
