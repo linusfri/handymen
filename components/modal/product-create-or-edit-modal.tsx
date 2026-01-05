@@ -266,7 +266,7 @@ export default function ProductEditOrCreateModal(
             disabled={formState.isSubmitting}
           >
             <Text className={cn('bg-destructive font-semibold text-primary-foreground')}>
-              {t('productDetail.cancel')}
+              {t('common.cancel')}
             </Text>
           </Button>
         </FormProvider>

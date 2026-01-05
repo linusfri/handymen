@@ -1,6 +1,5 @@
 import { StateCreator } from 'zustand';
-import { Token, User } from 'lib/types/user';
-import { refreshToken } from 'lib/services/user-service';
+import { Token } from 'lib/types/user';
 
 export type AuthState = {
   token: Token | null;

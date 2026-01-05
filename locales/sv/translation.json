@@ -79,7 +79,6 @@
     "description": "Beskrivning",
     "edit": "Redigera",
     "save": "Spara",
-    "cancel": "Avbryt",
     "delete": "Ta bort",
     "deleteConfirmTitle": "Ta bort produkt",
     "deleteConfirmMessage": "Är du säker på att du vill ta bort denna produkt? Detta kan inte ångras.",
@@ -96,6 +95,8 @@
     "description": "Sidan du letar efter existerar inte eller har flyttats."
   },
   "common": {
+    "cancel": "Avbryt",
+    "goBackToApp": "Gå tillbaka till appen",
     "greetings": {
       "welcome": "Välkommen!"
     }
@@ -107,7 +108,6 @@
     "uploading": "Laddar upp...",
     "loading": "Laddar bilder...",
     "existingImages": "Befintliga bilder ({{selected}} valda)",
-    "select": "Välj ({{count}})",
-    "cancel": "Avbryt"
+    "select": "Välj ({{count}})"
   }
 }

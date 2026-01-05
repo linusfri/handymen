@@ -28,7 +28,7 @@ export default function ProductDetailScreen() {
   function handleDelete() {
     Alert.alert(t('productDetail.deleteConfirmTitle'), t('productDetail.deleteConfirmMessage'), [
       {
-        text: t('productDetail.cancel'),
+        text: t('common.cancel'),
         style: 'cancel',
       },
       {

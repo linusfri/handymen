@@ -161,7 +161,7 @@ export default function FilePickerModal({
           </Button>
           <Button className={cn('bg-destructive')} onPress={handleCancel}>
             <Text className={cn('font-semibold text-primary-foreground')}>
-              {t('imagePicker.cancel')}
+              {t('common.cancel')}
             </Text>
           </Button>
         </View>
