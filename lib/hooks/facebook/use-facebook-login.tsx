@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { initiateFacebookLogin } from 'lib/services/user-service';
+import { initiateFacebookLogin } from 'lib/services/facebook-service';
 
 export function useFacebookLogin() {
   const facebookLoginMutation = useMutation({

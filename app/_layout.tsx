@@ -5,7 +5,6 @@ import { ThemeProvider } from '@react-navigation/native';
 import { Platform, AppStateStatus } from 'react-native';
 import { PortalHost } from '@rn-primitives/portal';
 import { StatusBar } from 'expo-status-bar';
-import { useColorScheme } from 'nativewind';
 import { focusManager, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useOnlineManager } from 'lib/hooks/use-online-manager';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
@@ -14,6 +13,7 @@ import React from 'react';
 import App from 'app/app';
 import SetUpFonts from 'lib/fonts/fonts';
 import { SplashScreen } from 'expo-router';
+import { usePersistedTheme } from 'lib/hooks/theme/use-persisted-theme';
 
 function onAppStateChange(status: AppStateStatus) {
   // React Query already supports in web browser refetch on window focus by default
@@ -34,7 +34,7 @@ const queryClient = new QueryClient({
 export { ErrorBoundary } from 'expo-router';
 
 export default function RootLayout() {
-  const { colorScheme } = useColorScheme();
+  const { colorScheme } = usePersistedTheme();
   useOnlineManager();
   useAppState(onAppStateChange);
   const fontsLoaded = SetUpFonts();

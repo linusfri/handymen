@@ -4,9 +4,9 @@ import { t } from 'lib/i18n';
 import { Icon } from 'components/ui/icon';
 import { MoonStarIcon, SunIcon } from 'lucide-react-native';
 import { Button } from 'components/ui/button';
-import { useColorScheme } from 'nativewind';
 import { commonHeaderTheme } from '../../lib/constants/header/theme';
 import MaterialSymbol from 'lib/icons/material-symbols';
+import { usePersistedTheme } from 'lib/hooks/theme/use-persisted-theme';
 
 const THEME_ICONS = {
   light: SunIcon,
@@ -14,11 +14,11 @@ const THEME_ICONS = {
 };
 
 function ThemeToggle() {
-  const { colorScheme, toggleColorScheme } = useColorScheme();
+  const { colorScheme, toggleTheme } = usePersistedTheme();
 
   return (
     <Button
-      onPressIn={toggleColorScheme}
+      onPressIn={toggleTheme}
       size="icon"
       variant="ghost"
       className="ios:size-9 rounded-full web:mx-4"

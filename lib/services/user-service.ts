@@ -1,5 +1,5 @@
 import axiosClient from '../api/axios-client';
-import { User, AuthResponse, FacebookLoginResponse } from 'lib/types/user';
+import { User, AuthResponse } from 'lib/types/user';
 
 export async function getUser() {
   return (await axiosClient.get<User>('/auth/user')).data;
@@ -38,7 +38,4 @@ export async function logoutUser() {
   return (await axiosClient.post('/auth/logout')).data;
 }
 
-export async function initiateFacebookLogin() {
-  const response = await axiosClient.get<FacebookLoginResponse>('/facebook-instagram/login');
-  return response.data;
-}
+

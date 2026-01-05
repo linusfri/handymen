@@ -20,7 +20,8 @@
     "tabs": {
       "home": "Hem",
       "items": "Mina produkter",
-      "settings": "Inställningar"
+      "settings": "Inställningar",
+      "settings.integrations": "Integrationer"
     }
   },
   "product": {
@@ -100,6 +101,19 @@
     "greetings": {
       "welcome": "Välkommen!"
     }
+  },
+  "settings": {
+    "title": "Inställningar",
+    "sections": {
+      "integrations": "Integrationer"
+    },
+    "integrations": "Integrationer",
+    "integrationsDescription": "Anslut och hantera externa tjänster"
+  },
+  "integrations": {
+    "meta": "FB / INSTA",
+    "active": "Aktiv",
+    "inactive": "Inaktiv"
   },
   "imagePicker": {
     "title": "Välj bilder",

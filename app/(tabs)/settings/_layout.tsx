@@ -33,6 +33,14 @@ export default function SettingsLayout() {
           ...commonHeaderTheme,
         }}
       />
+
+      <Stack.Screen
+        name='integrations'
+        options={{
+          title: t('navigation.tabs.settings.integrations'),
+          headerShown: false,
+        }}
+      />
     </Stack>
   );
 }
