@@ -48,6 +48,7 @@ export const glyphMap = {
   lightMode: 'light_mode',
   linkedServices: 'linked_services',
   localShipping: 'local_shipping',
+  login: 'login',
   microbiology: 'microbiology',
   modeCool: 'mode_cool',
   mobileChat: 'mobile_chat',

@@ -18,6 +18,13 @@ export default function IntegrationsLayout() {
           ...commonSubPageHeaderTheme,
         }}
       />
+      <Stack.Screen
+        name='meta'
+        options={{
+          title: t('integrations.meta'),
+          ...commonSubPageHeaderTheme,
+        }}
+      />
     </Stack>
   );
 }

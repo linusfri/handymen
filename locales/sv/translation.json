@@ -13,7 +13,9 @@
       "username": "Användarnamn",
       "password": "Lösenord",
       "rememberMe": "Kom ihåg mig"
-    }
+    },
+    "notLoggedIn": "Du är inte inloggad",
+    "loggedIn": "Du är inloggad"
   },
   "navigation": {
     "go-back": "Gå tillbaka",
@@ -26,7 +28,7 @@
   },
   "product": {
     "create": {
-      "title": "Skapa produkt", 
+      "title": "Skapa produkt",
       "description": "Lägg till information om den produkt du vill skapa.",
       "submit": "Lägg till produkt"
     },
@@ -100,6 +102,15 @@
     "goBackToApp": "Gå tillbaka till appen",
     "greetings": {
       "welcome": "Välkommen!"
+    },
+    "yourPages": "Dina sidor",
+
+    "states": {
+      "loading": "Laddar...",
+      "noData": "Ingen data tillgänglig",
+      "active": "Aktiv",
+      "inactive": "Inaktiv",
+      "noPagesFound": "Inga sidor hittades"
     }
   },
   "settings": {
@@ -112,8 +123,7 @@
   },
   "integrations": {
     "meta": "FB / INSTA",
-    "active": "Aktiv",
-    "inactive": "Inaktiv"
+    "facebookInstagram": "Facebook / Instagram"
   },
   "imagePicker": {
     "title": "Välj bilder",

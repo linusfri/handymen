@@ -1,16 +1,18 @@
 import axiosClient from 'lib/api/axios-client';
-import { FacebookLoginResponse } from 'lib/types/user';
+import { FacebookLoginResponse, FacebookPages } from 'lib/types/facebook';
 
-// Facebook user type (adjust based on your backend response)
 export type FacebookUser = {
   id: string;
   name: string;
   email?: string;
 };
 
-// Get Facebook user data from backend
 export async function getFacebookUser() {
   return (await axiosClient.get<FacebookUser>('/facebook-instagram/user')).data;
+}
+
+export async function getCurrentFacebookUserPages() {
+  return (await axiosClient.get<FacebookPages>('/facebook-instagram/user/pages')).data.data;
 }
 
 export async function initiateFacebookLogin() {
