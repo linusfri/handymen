@@ -12,10 +12,10 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { useCurrentFacebookUserPages } from 'lib/hooks/facebook/use-get-current-facebook-user-pages';
 import { useBoundStore } from 'lib/store/store';
 
-export default function FacebookInstagram() {
+export default function Meta() {
   const { initiateLogin } = useFacebookLogin();
   const { facebookUser } = useGetFacebookUser();
-  const { facebookUserPages } = useCurrentFacebookUserPages({ facebookUser });
+  const { facebookUserPages } = useCurrentFacebookUserPages({ facebookUserId: facebookUser?.id });
   const [redirectUrl, setRedirectUrl] = React.useState<string | null>(null);
   const [showWebview, setShowWebview] = React.useState(false);
 
@@ -116,7 +116,12 @@ export default function FacebookInstagram() {
                   <Text className={cn('font-semibold text-base')}>{page.name}</Text>
                   <Text className={cn('text-sm text-gray-600')}>{page.id}</Text>
                 </View>
-                <Text className={cn('text-sm', currentFacebookPageId === page.id ? 'text-emerald-600' : 'text-neutral-600')}>
+                <Text
+                  className={cn(
+                    'text-sm',
+                    currentFacebookPageId === page.id ? 'text-emerald-600' : 'text-neutral-600'
+                  )}
+                >
                   {currentFacebookPageId === page.id
                     ? t('common.states.active')
                     : t('common.states.inactive')}

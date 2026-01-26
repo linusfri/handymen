@@ -1,12 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
+import TIME from 'lib/constants/time';
 import { getCurrentFacebookUserPages } from 'lib/services/facebook-service';
-import { FacebookUser } from 'lib/types/facebook';
 
-export function useCurrentFacebookUserPages({facebookUser}: {facebookUser: FacebookUser | undefined}) {
+export function useCurrentFacebookUserPages({facebookUserId}: {facebookUserId: string | undefined}) {
   const facebookUserPagesQuery = useQuery({
-    queryKey: ['facebook-user-pages', facebookUser?.id],
+    queryKey: ['facebook-user-pages', facebookUserId],
     queryFn: getCurrentFacebookUserPages,
-    enabled: !!facebookUser,
+    enabled: !!facebookUserId,
+    staleTime: TIME.FIVE_MINUTES,
   });
 
   return {

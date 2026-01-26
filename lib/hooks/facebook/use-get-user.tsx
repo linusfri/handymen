@@ -4,7 +4,7 @@ import { getFacebookUser } from 'lib/services/facebook-service';
 export function useGetFacebookUser() {
   const facebookUserQuery = useQuery({
     queryKey: ['facebook-user'],
-    queryFn: getFacebookUser,
+    queryFn: getFacebookUser
   });
 
   return {
