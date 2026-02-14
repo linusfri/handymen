@@ -12,24 +12,24 @@ import { View } from 'react-native';
 import MaterialSymbol from 'lib/icons/material-symbols';
 import FilePickerModal from 'components/modal/image-picker-modal';
 import { Separator } from 'components/ui/separator';
-import { ProductStatus, ProductCreateData, ProductEditData } from 'lib/types/product';
+import {
+  ProductStatus,
+  ProductCreateData,
+  ProductEditData,
+  ProductIntegrations,
+} from 'lib/types/product';
 import { useProduct } from 'lib/hooks/product/use-product';
 import Loader from 'components/loader/loader';
 import { useFiles } from 'lib/hooks/image/use-images';
 import FileListing from 'components/image/file-listing';
+import { useBoundStore } from 'lib/store/store';
 
-export type ProductCreateFormData = {
+export type ProductMutateFormData = {
   name: string;
   description: string;
   status: string;
   price: string;
-};
-
-export type ProductEditFormData = {
-  name: string;
-  description: string;
-  status: string;
-  price: string;
+  integrations?: ProductIntegrations;
 };
 
 type CreateProductModalProps = {
@@ -50,6 +50,8 @@ export default function ProductEditOrCreateModal(
 ) {
   const [imagePickerVisible, setImagePickerVisible] = useState(false);
   const [selectedFileIds, setSelectedFileIds] = useState<number[]>([]);
+  const { currentFacebookPageId } = useBoundStore();
+
   const { files } = useFiles();
 
   const currentFileObjects = files?.filter((file) => selectedFileIds.includes(file.id));
@@ -69,16 +71,18 @@ export default function ProductEditOrCreateModal(
           description: '',
           status: 'available' as ProductStatus,
           price: '',
-        } as ProductCreateFormData)
+          integrations: undefined,
+        } as ProductMutateFormData)
       : ({
           id: product?.id,
           name: product?.name,
           description: product?.description || '',
           status: product?.status as ProductStatus,
           price: product?.price.toString(),
-        } as ProductEditFormData);
+          integrations: product?.integrations,
+        } as ProductMutateFormData);
 
-  const { ...formMethods } = useForm<ProductCreateFormData | ProductEditFormData>({
+  const { ...formMethods } = useForm<ProductMutateFormData>({
     defaultValues,
   });
 
@@ -89,23 +93,21 @@ export default function ProductEditOrCreateModal(
     { label: t('product.status.sold'), value: 'sold' },
   ];
 
-  async function onSubmit(data: ProductCreateFormData | ProductEditFormData) {
+  async function onSubmit(data: ProductMutateFormData) {
+    const parsedSubmitData = {
+      name: data.name,
+      description: data.description,
+      status: data.status as ProductStatus,
+      price: parseFloat(data.price),
+      image_ids: selectedFileIds,
+      integrations: currentFacebookPageId
+        ? [{ platform: 'facebook', resource_id: currentFacebookPageId }]
+        : undefined,
+    };
     if (props.action === 'create') {
-      submitCreateProduct({
-        name: data.name,
-        description: data.description,
-        status: data.status as ProductStatus,
-        price: parseFloat(data.price),
-        image_ids: selectedFileIds,
-      } as ProductCreateData);
+      submitCreateProduct(parsedSubmitData as ProductCreateData);
     } else {
-      submitUpdateProduct({
-        name: data.name,
-        description: data.description,
-        status: data.status as ProductStatus,
-        price: parseFloat(data.price),
-        image_ids: selectedFileIds,
-      });
+      submitUpdateProduct(parsedSubmitData as ProductEditData);
     }
 
     reset();
