@@ -9,7 +9,7 @@
       /**
         Request over http (no ssl), certificate not valid for LAN adresses.
       */
-      EXPO_PUBLIC_API_URL = "https://auth-server-local.friikod.se";
+      EXPO_PUBLIC_API_URL = "https://handy-gleam-local.friikod.se";
       EXPO_PUBLIC_APP_LOCALE = "sv-SE";
     };
 
