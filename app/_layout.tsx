@@ -39,6 +39,12 @@ export default function RootLayout() {
   useAppState(onAppStateChange);
   const fontsLoaded = SetUpFonts();
 
+  React.useEffect(() => {
+    if (fontsLoaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
   if (!fontsLoaded) {
     SplashScreen.preventAutoHideAsync();
     return null;
