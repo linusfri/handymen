@@ -18,7 +18,9 @@
       "extends": "base",
       "developmentClient": true,
       "env": {
-        "ENVIRONMENT": "development"
+        "ENVIRONMENT": "development",
+        "EXPO_PUBLIC_API_URL": "https://handy-gleam.friikod.se",
+        "EXPO_PUBLIC_APP_LOCALE": "sv-SE"
       },
       "android": {
         "distribution": "internal",
