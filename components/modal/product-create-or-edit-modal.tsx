@@ -101,7 +101,7 @@ export default function ProductEditOrCreateModal(
       price: parseFloat(data.price),
       image_ids: selectedFileIds,
       integrations: currentFacebookPageId
-        ? [{ platform: 'facebook', resource_id: currentFacebookPageId }]
+        ? [{ platform: 'facebook', resource_id: currentFacebookPageId, resource_type: 'page' }]
         : undefined,
     };
     if (props.action === 'create') {

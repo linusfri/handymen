@@ -5,6 +5,7 @@ export type ProductIntegrations = [
   {
     platform: 'facebook' | 'instagram';
     resource_id: string;
+    resource_type: 'page';
   },
 ];
 
