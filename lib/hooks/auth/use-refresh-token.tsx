@@ -15,16 +15,16 @@ export default function useRefreshToken() {
     onSuccess: (data) => {
       refreshClientToken(data.token);
     },
-    retry: false,
+    retry: true,
   });
 
   useEffect(() => {
     if (!user || !token?.refresh_token) return;
-    const ONE_HOUR = 1000 * 60 * 60;
+    const FIVE_MINUTES = 1000 * 60 * 5;
 
     const interval = setInterval(() => {
       refreshTokenMutation.mutate({ _refreshToken: token.refresh_token });
-    }, ONE_HOUR);
+    }, FIVE_MINUTES);
     return () => clearInterval(interval);
-  }, []);
+  }, [user, token?.refresh_token]);
 }
