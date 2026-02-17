@@ -34,7 +34,9 @@
       "extends": "base",
       "environment": "preview",
       "env": {
-        "ENVIRONMENT": "preview"
+        "ENVIRONMENT": "preview",
+        "EXPO_PUBLIC_API_URL": "https://handy-gleam.friikod.se",
+        "EXPO_PUBLIC_APP_LOCALE": "sv-SE"
       },
       "distribution": "internal",
       "channel": "preview"
