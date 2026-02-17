@@ -1,4 +1,4 @@
-import { cn, formatItemPrice, getFileUrl } from 'lib/utils';
+import { cn, formatItemPrice } from 'lib/utils';
 import React from 'react';
 import { Dimensions, Image, ScrollView, View } from 'react-native';
 import { Product } from 'lib/types/product';
@@ -22,7 +22,7 @@ export function ProductListing({ items, className, imageClassName }: ProductList
             <View style={{ width: screenWidth / 2 - 24 }}>
               <Image
                 source={{
-                  uri: item.images.length > 0 ? getFileUrl(item.images[0].uri) : undefined,
+                  uri: item.images.length > 0 ? item.images[0].uri : undefined,
                 }}
                 className={cn('aspect-square w-full rounded-md mb-2', imageClassName)}
                 resizeMode="cover"

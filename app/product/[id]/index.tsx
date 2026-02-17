@@ -2,7 +2,7 @@ import React from 'react';
 import { View, ScrollView, Alert, Image } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Text } from 'components/text/text';
-import { cn, getFileUrl, formatItemPrice } from 'lib/utils';
+import { cn, formatItemPrice } from 'lib/utils';
 import { Button } from 'components/ui/button';
 import { t } from 'lib/i18n';
 import { useProduct } from 'lib/hooks/product/use-product';
@@ -51,12 +51,12 @@ export default function ProductDetailScreen() {
       <View className={cn('p-4')}>
         <Image
           source={{
-            uri: product.images.length > 0 ? getFileUrl(product.images[0].uri) : undefined,
+            uri: product.images.length > 0 ? product.images[0].uri : undefined,
           }}
           className={cn('aspect-square w-full rounded-md')}
           resizeMode="cover"
         />
-        <FileListing currentFileObjects={product.images.slice(1)} containerClassName={cn('mb-6')}/>
+        <FileListing currentFileObjects={product.images.slice(1)} containerClassName={cn('mb-6')} />
         <Text className={cn('mb-2 font-bold text-2xl')}>{product.name}</Text>
         <Text className={cn('mb-4 text-xl text-muted-foreground')}>
           {formatItemPrice(product.price)}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from 'components/text/text';
-import { cn, getFileUrl } from 'lib/utils';
+import { cn } from 'lib/utils';
 import Modal from 'components/modal/modal';
 import { t } from 'lib/i18n';
 import { Button } from 'components/ui/button';
@@ -123,7 +123,7 @@ export default function FilePickerModal({
                     className={cn('relative rounded-md')}
                   >
                     <Image
-                      source={{ uri: getFileUrl(image.uri) }}
+                      source={{ uri: image.uri }}
                       className={cn('aspect-square w-full rounded-md border border-muted')}
                     />
                     {isSelected && (

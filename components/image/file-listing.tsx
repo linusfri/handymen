@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, Image, Pressable } from 'react-native';
-import { cn, getFileUrl } from 'lib/utils';
+import { cn } from 'lib/utils';
 import MaterialSymbol from 'lib/icons/material-symbols';
 
 export default function FileListing({
@@ -19,7 +19,7 @@ export default function FileListing({
         {currentFileObjects.map((file) => (
           <View key={`existing-${file.id}`} className={cn('relative')}>
             <Image
-              source={{ uri: getFileUrl(file.uri) }}
+              source={{ uri: file.uri }}
               className={cn('h-20 w-20 rounded-md')}
               resizeMode="cover"
             />
