@@ -1,8 +1,12 @@
 inputs:
+  git-hooks:
+    url: github:cachix/git-hooks.nix
+    inputs:
+      nixpkgs:
+        follows: nixpkgs
   nixpkgs:
-    url: github:NixOS/nixpkgs/release-25.05
+    url: github:NixOS/nixpkgs/release-26.05
   templates:
     url: git+ssh://git@github.com/linusfri/templates.git
-
 imports:
-  - templates
+- templates
