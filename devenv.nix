@@ -59,7 +59,7 @@
       EOF
     '';
 
-    scripts.lint.exec = ''npx eslint $@'';
+    scripts.lint.exec = "npx eslint $@";
 
     git-hooks = {
       enable = true;
